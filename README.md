@@ -17,7 +17,7 @@
 
 ## Usage
 ```cpp
-constexpr CCompileTimeRandom rng;
+    constexpr CCompileTimeRandom rng;
 
     std::cout << "Random Int: " << rng.GenerateInt() << "\n";
     std::cout << "Random Int [1, 10]: " << rng.GenerateIntInRange(1, 10) << "\n";
