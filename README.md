@@ -16,13 +16,11 @@
 - **Compiler**: A compiler that supports `consteval` and other modern C++20/23 features (e.g., GCC 10+, Clang 10+, MSVC 19.29+).
 
 ## Usage
-### Without custom seed
 ```cpp
-    constexpr CCompileTimeRandom randGen;
-    constexpr unsigned int dwRandomNumber = randGen.GenerateMoreRandom();
-```
-### With custom seed
-```cpp
-    constexpr CCompileTimeRandom customRandGen(98765);
-    constexpr unsigned int customRandomNumber = customRandGen.GenerateMoreRandom();
+constexpr CCompileTimeRandom rng;
+
+    std::cout << "Random Int: " << rng.GenerateInt() << "\n";
+    std::cout << "Random Int [1, 10]: " << rng.GenerateIntInRange(1, 10) << "\n";
+    std::cout << "Random Bool: " << (rng.GenerateBool() ? "true" : "false") << "\n";
+    std::cout << "Random Float [0.0, 1.0): " << rng.GenerateFloat(0.0f, 1.0f) << "\n";
 ```
