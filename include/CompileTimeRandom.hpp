@@ -8,10 +8,14 @@ class CCompileTimeRandom
 {
 public:
     // Default constructor using __TIME__ as a seed
-    consteval CCompileTimeRandom() : m_uSeed(TimeStringToSeed(__TIME__)) {}
+    consteval CCompileTimeRandom() : m_uSeed(TimeStringToSeed(__TIME__))
+    {
+    }
 
     // Constructor to initialize the class with a specific seed value
-    consteval CCompileTimeRandom(unsigned int uSeed) : m_uSeed(uSeed) {}
+    consteval CCompileTimeRandom(unsigned int uSeed) : m_uSeed(uSeed)
+    {
+    }
 
     // Generate a random number by chaining multiple steps for complexity
     consteval unsigned int GenerateInt() const
