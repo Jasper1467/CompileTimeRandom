@@ -24,3 +24,10 @@ constexpr CCompileTimeRandom rng;
     std::cout << "Random Bool: " << (rng.GenerateBool() ? "true" : "false") << "\n";
     std::cout << "Random Float [0.0, 1.0): " << rng.GenerateFloat(0.0f, 1.0f) << "\n";
 ```
+**Output:**
+```
+Random Int: 3718806054
+Random Int [1, 10]: 5
+Random Bool: true
+Random Float [0.0, 1.0): 0.865852 
+```
