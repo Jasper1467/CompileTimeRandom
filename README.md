@@ -17,12 +17,12 @@
 
 ## Usage
 ```cpp
-    constexpr CCompileTimeRandom rng;
+constexpr CCompileTimeRandom rng;
 
-    std::cout << "Random Int: " << rng.GenerateInt() << "\n";
-    std::cout << "Random Int [1, 10]: " << rng.GenerateIntInRange(1, 10) << "\n";
-    std::cout << "Random Bool: " << (rng.GenerateBool() ? "true" : "false") << "\n";
-    std::cout << "Random Float [0.0, 1.0): " << rng.GenerateFloat(0.0f, 1.0f) << "\n";
+std::cout << "Random Int: " << rng.GenerateInt() << "\n";
+std::cout << "Random Int [1, 10]: " << rng.GenerateIntInRange(1, 10) << "\n";
+std::cout << "Random Bool: " << (rng.GenerateBool() ? "true" : "false") << "\n";
+std::cout << "Random Float [0.0, 1.0): " << rng.GenerateFloat(0.0f, 1.0f) << "\n";
 ```
 **Output:**
 ```
