@@ -59,6 +59,80 @@ public:
         return static_cast<char>(cMin + (GenerateInt() % (cMax - cMin + 1)));
     }
 
+    // Generate a compile-time array of random integers
+    template <std::size_t N>
+    consteval std::array<unsigned int, N> GenerateIntArray(unsigned int uMin, unsigned int uMax) const
+    {
+        std::array<unsigned int, N> arr{};
+        unsigned int uCurrentSeed = m_uSeed; // Use the seed as a starting point for array generation
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            // Generate a new random number based on the current seed
+            CCompileTimeRandom tempRNG(uCurrentSeed);
+            arr[i] = tempRNG.GenerateIntInRange(uMin, uMax);
+            // Update the seed with the newly generated random value to change the sequence
+            uCurrentSeed = tempRNG.GenerateInt();
+        }
+        return arr;
+    }
+
+    // Compile-time shuffling of an array
+    template <std::size_t N>
+    consteval std::array<unsigned int, N> ShuffleArray(const std::array<unsigned int, N> &arr) const
+    {
+        std::array<unsigned int, N> shuffledArray = arr;
+        unsigned int uCurrentSeed = m_uSeed; // Seed for the shuffle
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            // Generate a new index based on the current seed for shuffling
+            CCompileTimeRandom tempRNG(uCurrentSeed);
+            unsigned int j = tempRNG.GenerateIntInRange(0, N - 1); // Random index
+            std::swap(shuffledArray[i], shuffledArray[j]);
+            uCurrentSeed = tempRNG.GenerateInt(); // Update the seed to prevent repetitive shuffles
+        }
+        return shuffledArray;
+    }
+
+    template <typename T1, typename T2>
+    consteval std::pair<T1, T2> GenerateRandomPair(T1 min1, T1 max1, T2 min2, T2 max2) const
+    {
+        return std::make_pair(GenerateIntInRange(min1, max1), GenerateFloat(min2, max2));
+    }
+
+    template <std::size_t N>
+    consteval std::array<unsigned int, N> ShuffleArrayNoRepetition(const std::array<unsigned int, N> &arr) const
+    {
+        std::array<unsigned int, N> shuffledArray = arr;
+        unsigned int uCurrentSeed = m_uSeed; // Seed for the shuffle
+        for (std::size_t i = 0; i < N; ++i)
+        {
+            CCompileTimeRandom tempRNG(uCurrentSeed);
+            unsigned int j;
+            do
+            {
+                j = tempRNG.GenerateIntInRange(0, N - 1);
+            } while (i == j); // Ensure no element stays in its original position
+            std::swap(shuffledArray[i], shuffledArray[j]);
+            uCurrentSeed = tempRNG.GenerateInt();
+        }
+        return shuffledArray;
+    }
+
+    template <std::size_t N>
+    consteval std::array<char, N> GenerateRandomString(char cMin = 'a', char cMax = 'z') const
+    {
+        std::array<char, N> randomString{};
+        unsigned int uCurrentSeed = m_uSeed;
+        for (std::size_t i = 0; i < N - 1; ++i) // N - 1 to keep space for null terminator
+        {
+            CCompileTimeRandom tempRNG(uCurrentSeed);
+            randomString[i] = tempRNG.GenerateChar(cMin, cMax);
+            uCurrentSeed = tempRNG.GenerateInt();
+        }
+        randomString[N - 1] = '\0'; // Null-terminate the string
+        return randomString;
+    }
+
 private:
     unsigned int m_uSeed;
 
@@ -95,7 +169,7 @@ private:
     }
 
     // Convert __TIME__ macro string to a seed
-    consteval unsigned int TimeStringToSeed(const char* szTime) const
+    consteval unsigned int TimeStringToSeed(const char *szTime) const
     {
         unsigned int uHours = (szTime[0] - '0') * 10 + (szTime[1] - '0');
         unsigned int uMinutes = (szTime[3] - '0') * 10 + (szTime[4] - '0');
